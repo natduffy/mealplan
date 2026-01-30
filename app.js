@@ -548,6 +548,38 @@ function handleCancelEdit() {
     render();
 }
 
+function handleSaveApproveAndNext(day) {
+    const input = document.querySelector(`.meal-input[data-day="${day}"]`);
+    if (!input) return;
+    
+    const value = input.value.trim();
+    if (value) {
+        // Update or create the meal
+        let meal = mealPlan.find(m => m.day === day);
+        if (meal) {
+            meal.meal = value;
+            meal.category = 'custom';
+            meal.approved = true; // Lock it
+        } else {
+            mealPlan.push({
+                day,
+                meal: value,
+                category: 'custom',
+                approved: true // Lock it
+            });
+            mealPlan.sort((a, b) => days.indexOf(a.day) - days.indexOf(b.day));
+        }
+        savePlanToFirebase();
+    }
+    
+    // Move to next day
+    const currentIndex = days.indexOf(day);
+    const nextIndex = (currentIndex + 1) % days.length;
+    editingDay = days[nextIndex];
+    
+    render();
+}
+
 // Event delegation for buttons
 document.getElementById('meal-list').addEventListener('click', (e) => {
     const btn = e.target.closest('button');
@@ -570,7 +602,7 @@ document.getElementById('meal-list').addEventListener('click', (e) => {
     }
 });
 
-// Handle Enter key to save, Escape to cancel
+// Handle Enter key to save, Escape to cancel, Tab to save+approve+next
 document.getElementById('meal-list').addEventListener('keydown', (e) => {
     if (e.target.classList.contains('meal-input')) {
         if (e.key === 'Enter') {
@@ -579,6 +611,9 @@ document.getElementById('meal-list').addEventListener('keydown', (e) => {
         } else if (e.key === 'Escape') {
             e.preventDefault();
             handleCancelEdit();
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
+            handleSaveApproveAndNext(e.target.dataset.day);
         }
     }
 });
