@@ -36,7 +36,13 @@ const mealConcepts = {
         "orange chicken with broccoli",
         "chicken gumbo",
         "tom kha gai",
-        "chicken and apple salad"
+        "chicken and apple salad",
+        "chicken wings",
+        "halal cart chicken",
+        "roasted chicken",
+        "spicy sesame noodles with chicken",
+        "turkey chili",
+        "turkey and white bean soup"
     ],
     fish: [
         "fish and peppers",
@@ -55,7 +61,10 @@ const mealConcepts = {
         "fish curry",
         "pan-seared fish with lemon",
         "fish and chips",
-        "seafood pasta"
+        "seafood pasta",
+        "shrimp scampi",
+        "coconut miso salmon",
+        "brown sugar mustard salmon"
     ],
     pork: [
         "pork chops and apples",
@@ -72,7 +81,8 @@ const mealConcepts = {
         "pork and squash stew",
         "coconut pork curry",
         "pork and bean soup",
-        "Italian sausage pasta"
+        "Italian sausage pasta",
+        "spaghetti carbonara"
     ],
     beef: [
         "beef stew",
@@ -89,7 +99,9 @@ const mealConcepts = {
         "Korean beef bowl",
         "Swedish meatballs",
         "beef and vegetable soup",
-        "stuffed peppers"
+        "stuffed peppers",
+        "Korean meatballs",
+        "pasta bolognese"
     ],
     vegetarian: [
         "grilled cheese and soup",
@@ -109,7 +121,18 @@ const mealConcepts = {
         "polenta with roasted vegetables",
         "minestrone soup",
         "falafel bowls",
-        "stuffed squash"
+        "stuffed squash",
+        "scrambled eggs",
+        "white bean stew",
+        "red lentil soup",
+        "macaroni and cheese",
+        "shakshuka",
+        "gnocchi with brussels sprouts",
+        "spiced chickpea stew",
+        "mushroom white bean bake",
+        "sesame noodles",
+        "caramelized shallot pasta",
+        "pasta with tomato sauce"
     ]
 };
 
