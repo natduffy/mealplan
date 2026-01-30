@@ -2,7 +2,7 @@
   "name": "Dinner This Week",
   "short_name": "Dinner",
   "description": "Plan your weekly dinners",
-  "start_url": "/",
+  "start_url": "/mealplan/",
   "display": "standalone",
   "background_color": "#FBF7F0",
   "theme_color": "#C75B39",
