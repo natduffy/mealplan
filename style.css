@@ -231,6 +231,11 @@ h1 {
     font-size: 1.0625rem;
     color: var(--ink);
     line-height: 1.4;
+    cursor: pointer;
+}
+
+.meal-content:hover {
+    color: var(--terracotta);
 }
 
 .meal-card.empty .meal-content {

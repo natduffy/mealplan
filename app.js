@@ -580,8 +580,17 @@ function handleSaveApproveAndNext(day) {
     render();
 }
 
-// Event delegation for buttons
+// Event delegation for buttons and meal content clicks
 document.getElementById('meal-list').addEventListener('click', (e) => {
+    // Check if clicked on meal content text - trigger edit
+    if (e.target.classList.contains('meal-content')) {
+        const card = e.target.closest('.meal-card');
+        if (card && !card.classList.contains('editing')) {
+            handleEdit(card.dataset.day);
+        }
+        return;
+    }
+    
     const btn = e.target.closest('button');
     if (!btn) return;
     
