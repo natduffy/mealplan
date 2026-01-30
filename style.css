@@ -62,19 +62,6 @@ h1 {
     font-size: 2.25rem;
     color: var(--ink);
     letter-spacing: -0.02em;
-    margin-bottom: 0.75rem;
-}
-
-.subtitle {
-    font-size: 0.9rem;
-    color: var(--ink-light);
-    margin-bottom: 1.5rem;
-}
-
-.header-actions {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
 }
 
 .btn {
@@ -319,10 +306,16 @@ h1 {
     opacity: 1;
 }
 
-/* Footer hint */
-.footer-hint {
-    text-align: center;
+/* Footer */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 2rem;
+    gap: 1rem;
+}
+
+.footer-hint {
     font-size: 0.8125rem;
     color: var(--ink-light);
     opacity: 0.7;
