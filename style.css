@@ -320,6 +320,21 @@ footer {
     gap: 1rem;
 }
 
+.footer-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-magic {
+    background: var(--terracotta);
+    color: var(--warm-white);
+}
+
+.btn-magic:hover {
+    background: var(--ink);
+    transform: translateY(-1px);
+}
+
 .footer-hint {
     font-size: 0.8125rem;
     color: var(--ink-light);
