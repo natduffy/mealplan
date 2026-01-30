@@ -511,12 +511,6 @@ function handleShuffleAll() {
     render();
 }
 
-function handleMagicList() {
-    // Wipe everything and generate a completely fresh plan
-    mealPlan = generateMealPlan(false); // Don't preserve anything
-    savePlanToFirebase();
-    render();
-}
 
 function handleEdit(day) {
     editingDay = day;
@@ -635,7 +629,6 @@ document.getElementById('meal-list').addEventListener('keydown', (e) => {
 });
 
 document.getElementById('shuffle-all').addEventListener('click', handleShuffleAll);
-document.getElementById('magic-list').addEventListener('click', handleMagicList);
 
 // Initialize with Firebase real-time listener
 mealPlanRef.on('value', (snapshot) => {
