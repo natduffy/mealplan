@@ -130,19 +130,29 @@ const mealConcepts = {
         "gnocchi with brussels sprouts",
         "spiced chickpea stew",
         "mushroom white bean bake",
+        "mushroom bean bake",
         "sesame noodles",
         "caramelized shallot pasta",
-        "pasta with tomato sauce"
+        "pasta with tomato sauce",
+        "mexi meal"
     ]
 };
 
 // All 7 days of the week
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+// Display order: today first, then rest of week (for rendering only)
+function getTodayDayName() {
+    return days[(new Date().getDay() + 6) % 7];
+}
+
+function getDaysDisplayOrder() {
+    const todayIndex = (new Date().getDay() + 6) % 7;
+    return [...Array(7)].map((_, i) => days[(todayIndex + i) % 7]);
+}
+
 // State
 let mealPlan = [];
-let draggedItem = null;
-let draggedIndex = null;
 let editingDay = null;
 let isInitialized = false;
 
@@ -316,26 +326,22 @@ function generateSingleMeal(day) {
 function render() {
     const list = document.getElementById('meal-list');
     list.innerHTML = '';
-    
-    days.forEach((day, index) => {
+    const todayName = getTodayDayName();
+    const displayOrder = getDaysDisplayOrder();
+
+    displayOrder.forEach((day, index) => {
         const mealData = mealPlan.find(m => m.day === day);
         const isEditing = editingDay === day;
+        const dayLabel = day === todayName ? 'Today' : day.slice(0, 3);
         const li = document.createElement('li');
         li.className = 'meal-card' + (mealData?.approved ? ' approved' : '') + (!mealData ? ' empty' : '') + (isEditing ? ' editing' : '');
         li.dataset.day = day;
         li.dataset.index = index;
-        
+
         if (mealData) {
-            li.draggable = !isEditing;
-            
             if (isEditing) {
                 li.innerHTML = `
-                    <div class="drag-handle" style="visibility: hidden;">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <span class="day-label">${day.slice(0, 3)}</span>
+                    <span class="day-label">${dayLabel}</span>
                     <input type="text" class="meal-input" value="${mealData.meal}" data-day="${day}" placeholder="Enter meal...">
                     <div class="meal-actions">
                         <button class="btn btn-action btn-save" data-day="${day}" title="Save">✓</button>
@@ -344,12 +350,7 @@ function render() {
                 `;
             } else {
                 li.innerHTML = `
-                    <div class="drag-handle" title="Drag to reorder">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <span class="day-label">${day.slice(0, 3)}</span>
+                    <span class="day-label">${dayLabel}</span>
                     <span class="meal-content">${mealData.meal}</span>
                     <div class="meal-actions">
                         <button class="btn btn-action btn-edit" data-day="${day}" title="Edit">✎</button>
@@ -360,26 +361,11 @@ function render() {
                     </div>
                 `;
             }
-            
-            // Add drag event listeners (only when not editing)
-            if (!isEditing) {
-                li.addEventListener('dragstart', handleDragStart);
-                li.addEventListener('dragend', handleDragEnd);
-                li.addEventListener('dragover', handleDragOver);
-                li.addEventListener('dragenter', handleDragEnter);
-                li.addEventListener('dragleave', handleDragLeave);
-                li.addEventListener('drop', handleDrop);
-            }
         } else {
             // Empty slot - show input for manual entry
             if (isEditing) {
                 li.innerHTML = `
-                    <div class="drag-handle" style="visibility: hidden;">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <span class="day-label">${day.slice(0, 3)}</span>
+                    <span class="day-label">${dayLabel}</span>
                     <input type="text" class="meal-input" value="" data-day="${day}" placeholder="Enter meal...">
                     <div class="meal-actions">
                         <button class="btn btn-action btn-save" data-day="${day}" title="Save">✓</button>
@@ -388,12 +374,7 @@ function render() {
                 `;
             } else {
                 li.innerHTML = `
-                    <div class="drag-handle" style="visibility: hidden;">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <span class="day-label">${day.slice(0, 3)}</span>
+                    <span class="day-label">${dayLabel}</span>
                     <span class="meal-content">No meal planned</span>
                     <div class="meal-actions">
                         <button class="btn btn-action btn-edit" data-day="${day}" title="Add">+</button>
@@ -402,7 +383,7 @@ function render() {
                 `;
             }
         }
-        
+
         list.appendChild(li);
     });
     
@@ -413,85 +394,6 @@ function render() {
             input.focus();
             input.select();
         }
-    }
-}
-
-// Drag and Drop handlers
-function handleDragStart(e) {
-    draggedItem = this;
-    draggedIndex = parseInt(this.dataset.index);
-    
-    // Set drag data
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', this.dataset.day);
-    
-    // Add visual feedback
-    setTimeout(() => {
-        this.classList.add('dragging');
-    }, 0);
-}
-
-function handleDragEnd(e) {
-    this.classList.remove('dragging');
-    
-    // Remove drag-over class from all items
-    document.querySelectorAll('.meal-card').forEach(card => {
-        card.classList.remove('drag-over');
-    });
-    
-    draggedItem = null;
-    draggedIndex = null;
-}
-
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
-
-function handleDragEnter(e) {
-    e.preventDefault();
-    if (this !== draggedItem && !this.classList.contains('empty')) {
-        this.classList.add('drag-over');
-    }
-}
-
-function handleDragLeave(e) {
-    this.classList.remove('drag-over');
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    this.classList.remove('drag-over');
-    
-    if (this === draggedItem || this.classList.contains('empty')) {
-        return;
-    }
-    
-    const fromDay = e.dataTransfer.getData('text/plain');
-    const toDay = this.dataset.day;
-    
-    if (fromDay && toDay && fromDay !== toDay) {
-        swapMeals(fromDay, toDay);
-    }
-}
-
-// Swap meals between two days
-function swapMeals(fromDay, toDay) {
-    const fromMeal = mealPlan.find(m => m.day === fromDay);
-    const toMeal = mealPlan.find(m => m.day === toDay);
-    
-    if (fromMeal && toMeal) {
-        // Swap the days
-        fromMeal.day = toDay;
-        toMeal.day = fromDay;
-        
-        // Re-sort by day order
-        mealPlan.sort((a, b) => days.indexOf(a.day) - days.indexOf(b.day));
-        
-        savePlanToFirebase();
-        render();
     }
 }
 

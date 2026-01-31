@@ -111,11 +111,6 @@ h1 {
     transition: all 0.2s ease;
     position: relative;
     border: 1px solid rgba(44, 36, 22, 0.06);
-    cursor: grab;
-}
-
-.meal-card:active {
-    cursor: grabbing;
 }
 
 .meal-card::before {
@@ -167,47 +162,6 @@ h1 {
 
 .meal-card.empty::before {
     display: none;
-}
-
-/* Drag and drop states */
-.meal-card.dragging {
-    opacity: 0.5;
-    transform: scale(1.02);
-    box-shadow: 
-        0 4px 8px var(--shadow),
-        0 16px 32px var(--shadow-heavy);
-}
-
-.meal-card.drag-over {
-    border-color: var(--terracotta);
-    background: var(--terracotta-light);
-}
-
-.meal-card.drag-over::before {
-    background: var(--terracotta);
-    opacity: 1;
-}
-
-/* Drag handle */
-.drag-handle {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 0.25rem;
-    opacity: 0.3;
-    transition: opacity 0.15s ease;
-}
-
-.meal-card:hover .drag-handle {
-    opacity: 0.6;
-}
-
-.drag-handle span {
-    display: block;
-    width: 12px;
-    height: 2px;
-    background: var(--ink);
-    border-radius: 1px;
 }
 
 /* Day label */
@@ -344,11 +298,6 @@ footer {
     
     h1 {
         font-size: 1.75rem;
-    }
-    
-    /* Hide drag handles on mobile - touch drag is awkward */
-    .drag-handle {
-        display: none;
     }
     
     /* Stack layout vertically */
