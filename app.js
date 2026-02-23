@@ -577,6 +577,9 @@ firebase.auth().signInAnonymously()
         });
     })
     .catch((err) => {
-        console.error('Could not connect:', err);
-        document.querySelector('.meal-list').innerHTML = '<li class="meal-card empty"><span class="day-label">Error</span><span class="meal-content">Could not connect. Check your network and try again.</span></li>';
+        console.error('Firebase auth error:', err.code, err.message);
+        const msg = err.code === 'auth/unauthorized-domain'
+            ? 'This site is not authorized for sign-in. Add this domain in Firebase Console → Authentication → Authorized domains.'
+            : 'Could not connect. Check your network and try again.';
+        document.querySelector('.meal-list').innerHTML = '<li class="meal-card empty"><span class="day-label">Error</span><span class="meal-content">' + msg + '</span></li>';
     });
