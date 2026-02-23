@@ -555,21 +555,28 @@ document.getElementById('meal-list').addEventListener('keydown', (e) => {
 
 document.getElementById('shuffle-all').addEventListener('click', handleShuffleAll);
 
-// Initialize with Firebase real-time listener
-mealPlanRef.on('value', (snapshot) => {
-    const hadData = loadPlanFromFirebase(snapshot);
-    
-    if (!isInitialized) {
-        isInitialized = true;
-        if (!hadData) {
-            // No existing data - generate a fresh plan
-            mealPlan = generateMealPlan();
-            savePlanToFirebase();
-        }
-    }
-    
-    // Only re-render if we're not in the middle of editing
-    if (!editingDay) {
-        render();
-    }
-});
+// Sign in anonymously, then attach Firebase listener (required when DB rules use auth)
+firebase.auth().signInAnonymously()
+    .then(() => {
+        mealPlanRef.on('value', (snapshot) => {
+            const hadData = loadPlanFromFirebase(snapshot);
+
+            if (!isInitialized) {
+                isInitialized = true;
+                if (!hadData) {
+                    // No existing data - generate a fresh plan
+                    mealPlan = generateMealPlan();
+                    savePlanToFirebase();
+                }
+            }
+
+            // Only re-render if we're not in the middle of editing
+            if (!editingDay) {
+                render();
+            }
+        });
+    })
+    .catch((err) => {
+        console.error('Could not connect:', err);
+        document.querySelector('.meal-list').innerHTML = '<li class="meal-card empty"><span class="day-label">Error</span><span class="meal-content">Could not connect. Check your network and try again.</span></li>';
+    });
