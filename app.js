@@ -322,6 +322,25 @@ function generateSingleMeal(day) {
     return { day, meal, category, approved: false };
 }
 
+// Show skeleton list immediately while auth and data load
+function renderSkeleton() {
+    const list = document.getElementById('meal-list');
+    list.innerHTML = '';
+    const todayName = getTodayDayName();
+    const displayOrder = getDaysDisplayOrder();
+
+    displayOrder.forEach((day) => {
+        const dayLabel = day === todayName ? 'Today' : day.slice(0, 3);
+        const li = document.createElement('li');
+        li.className = 'meal-card skeleton';
+        li.innerHTML = `
+            <span class="day-label">${dayLabel}</span>
+            <span class="skeleton-line" aria-hidden="true"></span>
+        `;
+        list.appendChild(li);
+    });
+}
+
 // Render the meal plan
 function render() {
     const list = document.getElementById('meal-list');
@@ -554,6 +573,9 @@ document.getElementById('meal-list').addEventListener('keydown', (e) => {
 });
 
 document.getElementById('shuffle-all').addEventListener('click', handleShuffleAll);
+
+// Show skeleton immediately so the page feels responsive
+renderSkeleton();
 
 // Sign in anonymously, then attach Firebase listener (required when DB rules use auth)
 firebase.auth().signInAnonymously()

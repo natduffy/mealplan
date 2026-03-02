@@ -164,6 +164,34 @@ h1 {
     display: none;
 }
 
+/* Loading skeleton */
+.meal-card.skeleton {
+    pointer-events: none;
+}
+
+.meal-card.skeleton:hover {
+    transform: none;
+}
+
+.skeleton-line {
+    flex: 1;
+    height: 1.125rem;
+    border-radius: 4px;
+    background: linear-gradient(
+        90deg,
+        rgba(44, 36, 22, 0.08) 0%,
+        rgba(44, 36, 22, 0.12) 50%,
+        rgba(44, 36, 22, 0.08) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
 /* Day label */
 .day-label {
     font-family: 'Fraunces', Georgia, serif;
@@ -298,6 +326,12 @@ footer {
     
     h1 {
         font-size: 1.75rem;
+    }
+    
+    /* Skeleton matches stacked layout on mobile */
+    .meal-card.skeleton .skeleton-line {
+        flex: 1 1 100%;
+        order: 2;
     }
     
     /* Stack layout vertically */
