@@ -330,7 +330,7 @@ function renderSkeleton() {
     const displayOrder = getDaysDisplayOrder();
 
     displayOrder.forEach((day) => {
-        const dayLabel = day === todayName ? 'Today' : day.slice(0, 3);
+        const dayLabel = day === todayName ? 'Oggi' : day.slice(0, 3);
         const li = document.createElement('li');
         li.className = 'meal-card skeleton';
         li.innerHTML = `
@@ -351,7 +351,7 @@ function render() {
     displayOrder.forEach((day, index) => {
         const mealData = mealPlan.find(m => m.day === day);
         const isEditing = editingDay === day;
-        const dayLabel = day === todayName ? 'Today' : day.slice(0, 3);
+        const dayLabel = day === todayName ? 'Oggi' : day.slice(0, 3);
         const li = document.createElement('li');
         li.className = 'meal-card' + (mealData?.approved ? ' approved' : '') + (!mealData ? ' empty' : '') + (isEditing ? ' editing' : '');
         li.dataset.day = day;
